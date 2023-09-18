@@ -13,6 +13,7 @@ namespace MenuScene
         [SerializeField] private CreateRoomMenu _createRoomMenu;
         [SerializeField] private RoomMenu _roomMenu;
         [SerializeField] private ErrorMenu _errorMenu;
+        [SerializeField] private FindRoomMenu _findRoomMenu;
 
         public UnityEvent<string> CreateRoomPressedEvent => _createRoomPressedEvent;
         public UnityEvent LeaveRoomPressedEvent => _leaveRoomPressedEvent;
@@ -25,6 +26,8 @@ namespace MenuScene
 
             _createRoomMenu.CreateRoomEvent.AddListener(OnCreateRoomPressed);
             _roomMenu.LeaveRoomEvent.AddListener(OnLeaveRoomPressed);
+            _findRoomMenu.GoBackEvent.AddListener(OnBackToMenuPressed);
+            _findRoomMenu.RoomJoining.AddListener(OnRoomJoining);
         }
 
         private void OnCreateRoomPressed(string arg)
@@ -35,6 +38,16 @@ namespace MenuScene
         private void OnLeaveRoomPressed()
         {
             _leaveRoomPressedEvent.Invoke(); 
+        }
+        
+        private void OnBackToMenuPressed()
+        {
+            ShowMainMenu();
+        }
+        
+        private void OnRoomJoining()
+        {
+            ShowLoadingMenu();
         }
 
         private void OpenMenu(Menu newMenu)
@@ -69,6 +82,11 @@ namespace MenuScene
             _errorMenu.SetErrorText(message);
             OpenMenu(_errorMenu);
         }
+        
+        public void ShowFindRoomMenu()
+        {
+            OpenMenu(_findRoomMenu);
+        }
 
         public void Quit()
         {
@@ -79,6 +97,7 @@ namespace MenuScene
         {
             _createRoomMenu.CreateRoomEvent.RemoveListener(OnCreateRoomPressed);
             _roomMenu.LeaveRoomEvent.RemoveListener(OnLeaveRoomPressed);
+            _findRoomMenu.GoBackEvent.RemoveListener(OnBackToMenuPressed);
         }
     }
 }
