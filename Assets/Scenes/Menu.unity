@@ -3391,7 +3391,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1196363270
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3428,6 +3428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90359e40fc664e75a68c2857f2f2fc4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _startButton: {fileID: 1397746460}
   _leaveRoomEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -3839,7 +3840,7 @@ GameObject:
   - component: {fileID: 1397746463}
   - component: {fileID: 1397746462}
   m_Layer: 5
-  m_Name: Start
+  m_Name: StartButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3909,7 +3910,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1397746463}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1196363271}
+        m_TargetAssemblyTypeName: MenuScene.Menus.RoomMenu, Assembly-CSharp
+        m_MethodName: StartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1397746463
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using MenuScene.Room;
+using Photon.Pun;
 using Photon.Realtime;
 using Server;
 using TMPro;
@@ -14,6 +15,7 @@ namespace MenuScene.Menus
     [RequireComponent(typeof(PlayerListUpdater))]
     public class RoomMenu : Menu
     {
+        [SerializeField] private GameObject _startButton;
         [HideInInspector][SerializeField] private UnityEvent _leaveRoomEvent;
         [SerializeField] private TMP_Text _roomNameField;
         [SerializeField] private Transform _playerListTable;
@@ -31,6 +33,7 @@ namespace MenuScene.Menus
             _playerListUpdater = GetComponent<PlayerListUpdater>();
             _playerListUpdater.PlayerEnteredEvent.AddListener(OnPlayerEnteredRoom);
             _playerListUpdater.PlayerLeftEvent.AddListener(OnPlayerLeft);
+            _playerListUpdater.MasterSwitchedEvent.AddListener(OnMasterClientSwitched);
         }
 
         private void OnPlayerLeft(Player arg0)
@@ -44,9 +47,16 @@ namespace MenuScene.Menus
                 }
             }
         }
+        
+        private void OnMasterClientSwitched()
+        {
+            _startButton.SetActive(PhotonNetwork.IsMasterClient);
+        }
 
         public void SetUpRoom(string name, Player[] playersList)
         {
+            _startButton.SetActive(PhotonNetwork.IsMasterClient);
+            
             _roomName = name;
             _roomNameField.text = _roomName;
             _playersListItems = new List<PlayerListItem>();
@@ -78,6 +88,11 @@ namespace MenuScene.Menus
         public void LeaveRoom()
         {
             _leaveRoomEvent.Invoke();
+        }
+            
+        public void StartGame()
+        {
+            PhotonNetwork.LoadLevel(1);
         }
     }
 }

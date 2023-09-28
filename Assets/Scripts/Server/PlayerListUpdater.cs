@@ -9,9 +9,11 @@ namespace Server
     {
         [HideInInspector][SerializeField] private UnityEvent<Player> _playerLeftEvent;
         [HideInInspector][SerializeField] private UnityEvent<Player> _playerEnteredEvent;
+        [HideInInspector][SerializeField] private UnityEvent _masterSwitchedEvent;
 
         public UnityEvent<Player> PlayerLeftEvent => _playerLeftEvent;
         public UnityEvent<Player> PlayerEnteredEvent => _playerEnteredEvent;
+        public UnityEvent MasterSwitchedEvent => _masterSwitchedEvent;
 
         
         public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -27,6 +29,11 @@ namespace Server
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             _playerEnteredEvent.Invoke(newPlayer);
+        }
+
+        public override void OnMasterClientSwitched(Player newMasterClient)
+        {
+            _masterSwitchedEvent.Invoke();
         }
     }
 }

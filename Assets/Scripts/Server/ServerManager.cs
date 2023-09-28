@@ -33,6 +33,7 @@ namespace Server
         {
             Debug.Log("Connected to master server");
             PhotonNetwork.JoinLobby();
+            PhotonNetwork.AutomaticallySyncScene = true;
         }
         
         public override void OnJoinedLobby()
