@@ -1,11 +1,9 @@
-using System;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.Events;
-using Random = System.Random;
 
-namespace Server
+namespace Multiplayer
 {
     public class ServerManager : MonoBehaviourPunCallbacks
     {

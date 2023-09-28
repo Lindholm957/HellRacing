@@ -1,12 +1,10 @@
 using System.Collections.Generic;
-using MenuScene;
-using MenuScene.Menus;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Server
+namespace Multiplayer
 {
     public class RoomListUpdater : MonoBehaviourPunCallbacks
     {

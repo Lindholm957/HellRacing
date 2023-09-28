@@ -1,10 +1,9 @@
-using System;
 using System.IO;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Server
+namespace Multiplayer
 {
     [RequireComponent(typeof(PhotonView))]
     public class RoomManager : MonoBehaviour

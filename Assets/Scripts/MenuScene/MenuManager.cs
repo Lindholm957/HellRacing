@@ -1,5 +1,5 @@
+using Multiplayer;
 using Photon.Realtime;
-using Server;
 using UnityEngine;
 
 namespace MenuScene
