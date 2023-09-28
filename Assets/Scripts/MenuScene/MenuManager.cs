@@ -1,3 +1,4 @@
+using Photon.Realtime;
 using Server;
 using UnityEngine;
 
@@ -35,9 +36,9 @@ namespace MenuScene
             _uiMenuManager.ShowLoadingMenu();
         }
         
-        private void OnJoinedRoom(string arg)
+        private void OnJoinedRoom(string roomName, Player[] playerList)
         {
-            _uiMenuManager.ShowRoomMenu(arg);
+            _uiMenuManager.ShowRoomMenu(roomName, playerList);
         }
         
         private void OnErrorToJoinRoom(string arg)

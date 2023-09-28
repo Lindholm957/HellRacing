@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using MenuScene.Room;
 using Photon.Realtime;
 using Server;
 using UnityEngine;
@@ -49,6 +50,8 @@ namespace MenuScene.Menus
             
             for (int i = 0; i < roomList.Count; i++)
             {
+                if (roomList[i].RemovedFromList)
+                    continue;
                 RoomListItem room = Instantiate(_roomPrefab, _roomListTable).GetComponent<RoomListItem>();
                 room.SetUp(roomList[i]);
                 _roomListItems.Add(room);

@@ -1,4 +1,5 @@
 using MenuScene.Menus;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -71,10 +72,10 @@ namespace MenuScene
             OpenMenu(_createRoomMenu);
         }
         
-        public void ShowRoomMenu(string roomName)
+        public void ShowRoomMenu(string roomName, Player[] playersList)
         {
-            _roomMenu.SetRoomName(roomName);
             OpenMenu(_roomMenu);
+            _roomMenu.SetUpRoom(roomName, playersList);
         }
         
         public void ShowErrorMenu(string message)

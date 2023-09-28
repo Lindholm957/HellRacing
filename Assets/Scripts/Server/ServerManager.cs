@@ -1,7 +1,9 @@
 using System;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.Events;
+using Random = System.Random;
 
 namespace Server
 {
@@ -9,14 +11,14 @@ namespace Server
     {
         [HideInInspector][SerializeField] private UnityEvent _loadingEvent;
         [HideInInspector][SerializeField] private UnityEvent _createRoomEvent;
-        [HideInInspector][SerializeField] private UnityEvent<string> _joinedRoomEvent;
+        [HideInInspector][SerializeField] private UnityEvent<string, Player[]> _joinedRoomEvent;
         [HideInInspector][SerializeField] private UnityEvent<string> _errorCreateRoomEvent;
         [HideInInspector][SerializeField] private UnityEvent _leavingRoomEvent;
         [HideInInspector][SerializeField] private UnityEvent _leftRoomEvent;
 
         public UnityEvent LoadingEvent => _loadingEvent;
         public UnityEvent CreateRoomEvent => _createRoomEvent;
-        public UnityEvent<string> JoinedRoomEvent => _joinedRoomEvent;
+        public UnityEvent<string, Player[]> JoinedRoomEvent => _joinedRoomEvent;
         public UnityEvent<string> ErrorCreateRoomEvent => _errorCreateRoomEvent;
         public UnityEvent LeavingRoomEvent => _leavingRoomEvent;
         public UnityEvent LeftRoomEvent => _leftRoomEvent;
@@ -37,6 +39,7 @@ namespace Server
         {
             Debug.Log("Joined server!");
             _loadingEvent.Invoke();
+            PhotonNetwork.NickName = "Player " + UnityEngine.Random.Range(0, 1000).ToString("0000");
         }
 
         public void CreateRoom(string roomName)
@@ -50,8 +53,8 @@ namespace Server
         }
         
         public override void OnJoinedRoom()
-        {
-            _joinedRoomEvent.Invoke(PhotonNetwork.CurrentRoom.Name);
+        { 
+            _joinedRoomEvent.Invoke(PhotonNetwork.CurrentRoom.Name, PhotonNetwork.PlayerList);
         }
 
         public override void OnCreateRoomFailed(short returnCode, string message)

@@ -4,14 +4,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MenuScene
+namespace MenuScene.Room
 {
     public class RoomListItem : MonoBehaviour
     {
         [HideInInspector][SerializeField] private UnityEvent _roomJoiningEvent;
         [SerializeField] private TMP_Text _roomName;
 
-        private RoomInfo _info;
+        public RoomInfo _info;
         
         public UnityEvent RoomJoiningEvent => _roomJoiningEvent;
         
