@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 /// <summary>
 /// Main car controller
 /// </summary>
 
-[RequireComponent (typeof (Rigidbody))]
+// [RequireComponent (typeof (Rigidbody))]
 public class CarController :MonoBehaviour
 {
 
@@ -65,6 +66,7 @@ public class CarController :MonoBehaviour
 
 	float[] AllGearsRatio;															 //All gears (Reverce, neutral and all forward).
 
+	private PhotonView _photonView;
 	Rigidbody _RB;
 	public Rigidbody RB
 	{
@@ -95,7 +97,8 @@ public class CarController :MonoBehaviour
 	private void Awake ()
 	{
 		RB.centerOfMass = COM.localPosition;
-
+		_photonView = GetComponent<PhotonView>();
+		
 		//Copy wheels in public property
 		Wheels = new Wheel[4] {
 			FrontLeftWheel,
@@ -138,6 +141,13 @@ public class CarController :MonoBehaviour
 		{
 			BackFireAction += () => particles.Emit (2);
 		}
+
+		if (!_photonView.IsMine)
+		{
+			Destroy(GetComponentInChildren<Camera>().gameObject);
+			Destroy(RB);
+			GetComponent<AudioListener>().enabled = false;
+		}
 	}
 
 	/// <summary>
@@ -163,48 +173,52 @@ public class CarController :MonoBehaviour
 
 	private void Update ()
 	{
-		for (int i = 0; i < Wheels.Length; i++)
+		if (_photonView.IsMine)
 		{
-			Wheels[i].UpdateVisual ();
+			for (int i = 0; i < Wheels.Length; i++)
+			{
+				Wheels[i].UpdateVisual();
+			}
 		}
 	}
 
 	private void FixedUpdate ()
 	{
-
-		CurrentSpeed = RB.velocity.magnitude;
-
-		UpdateSteerAngleLogic ();
-		UpdateRpmAndTorqueLogic ();
-
-		//Find max slip and update braking ground logic.
-		CurrentMaxSlip = Wheels[0].CurrentMaxSlip;
-		CurrentMaxSlipWheelIndex = 0;
-
-        if (InHandBrake)
-        {
-            RearLeftWheel.WheelCollider.brakeTorque = MaxBrakeTorque;
-            RearRightWheel.WheelCollider.brakeTorque = MaxBrakeTorque;
-            FrontLeftWheel.WheelCollider.brakeTorque = 0;
-            FrontRightWheel.WheelCollider.brakeTorque = 0;
-        }
-
-        for (int i = 0; i < Wheels.Length; i++)
+		if (_photonView.IsMine)
 		{
-            if (!InHandBrake)
-            {
-                Wheels[i].WheelCollider.brakeTorque = CurrentBrake;
-            }
+			CurrentSpeed = RB.velocity.magnitude;
 
-			Wheels[i].FixedUpdate ();
+			UpdateSteerAngleLogic();
+			UpdateRpmAndTorqueLogic();
 
-			if (CurrentMaxSlip < Wheels[i].CurrentMaxSlip)
+			//Find max slip and update braking ground logic.
+			CurrentMaxSlip = Wheels[0].CurrentMaxSlip;
+			CurrentMaxSlipWheelIndex = 0;
+
+			if (InHandBrake)
 			{
-				CurrentMaxSlip = Wheels[i].CurrentMaxSlip;
-				CurrentMaxSlipWheelIndex = i;
+				RearLeftWheel.WheelCollider.brakeTorque = MaxBrakeTorque;
+				RearRightWheel.WheelCollider.brakeTorque = MaxBrakeTorque;
+				FrontLeftWheel.WheelCollider.brakeTorque = 0;
+				FrontRightWheel.WheelCollider.brakeTorque = 0;
+			}
+
+			for (int i = 0; i < Wheels.Length; i++)
+			{
+				if (!InHandBrake)
+				{
+					Wheels[i].WheelCollider.brakeTorque = CurrentBrake;
+				}
+
+				Wheels[i].FixedUpdate();
+
+				if (CurrentMaxSlip < Wheels[i].CurrentMaxSlip)
+				{
+					CurrentMaxSlip = Wheels[i].CurrentMaxSlip;
+					CurrentMaxSlipWheelIndex = i;
+				}
 			}
 		}
-
 	}
 
 	#region Steer help logic

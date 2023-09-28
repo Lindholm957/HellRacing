@@ -20,7 +20,7 @@ public class CarStateUI :MonoBehaviour
 	[SerializeField] float MaxArrowAngle = -315f;
 
 	int CurrentFrame;
-	CarController SelectedCar { get { return GameController.PlayerCar; } }
+	// CarController SelectedCar { get { return GameController.PlayerCar; } }
 
 	private void Update ()
 	{
@@ -40,14 +40,14 @@ public class CarStateUI :MonoBehaviour
 
 	void UpdateArrow ()
 	{
-		var procent = SelectedCar.EngineRPM / SelectedCar.GetMaxRPM;
-		var angle = (MaxArrowAngle - MinArrowAngle) * procent + MinArrowAngle;
-		TahometerArrow.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
+		// var procent = SelectedCar.EngineRPM / SelectedCar.GetMaxRPM;
+		// var angle = (MaxArrowAngle - MinArrowAngle) * procent + MinArrowAngle;
+		// TahometerArrow.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
 	}
 
 	void UpdateGamePanel ()
 	{
-		SpeedText.text = SelectedCar.SpeedInHour.ToString ("000");
-		CurrentGearText.text = SelectedCar.CurrentGear.ToString ();
+		// SpeedText.text = SelectedCar.SpeedInHour.ToString ("000");
+		// CurrentGearText.text = SelectedCar.CurrentGear.ToString ();
 	}
 }
